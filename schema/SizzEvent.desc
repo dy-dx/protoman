@@ -1,0 +1,20 @@
+
+«
+SizzEvent.proto	SizzEvent"ˆ
+	SizzEvent
+event_timestamp (
+
+event_name (	2
+
+event_data (2.SizzEvent.SizzEvent.EventData™
+	EventData
+key_name (	
+value_string (	
+value_float (
+
+value_long (
+value_short (
+
+value_byte (
+
+value_bool (BH

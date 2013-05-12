@@ -1,0 +1,12 @@
+{
+  "name": "protoman"
+, "version": "0.0.1"
+, "private": true
+, "engines": {
+    "node": "0.10.x"
+  }
+, "dependencies": {
+    "dateformat": "~1.0.6-1.2.3"
+  , "protobuf": "~0.8.6"
+  }
+}

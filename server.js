@@ -1,10 +1,12 @@
-var net = require('net');
-var fs = require('fs');
+var net = require('net')
+  , fs = require('fs')
+  , dateFormat = require('dateformat');
 
 var cfg = {
   port: 8007
-, logPath: __dirname + '/log.log'
+, logPath: __dirname + '/logs/'
 };
+cfg.logPath += dateFormat(new Date(), "yyyy_mm_dd-HH_MM_sso") + '.b64.log';
 
 console.log('logging to', cfg.logPath);
 
@@ -17,10 +19,10 @@ var server = net.createServer(function(c) { //'connection' listener
   });
 
   c.on('data', function(data) {
-    var msg = data.toString('ascii');
-    fs.appendFileSync(cfg.logPath, msg, 'ascii', function(err) {
-      if (err) { console.log(err) };
-    });
+    var msg = data.toString('base64') + '\n';
+    c.write('HELLO JORDAN\r\n');
+
+    fs.appendFileSync(cfg.logPath, msg);
   });
 
 });
