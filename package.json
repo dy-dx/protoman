@@ -5,6 +5,10 @@
 , "engines": {
     "node": "0.10.x"
   }
+, "scripts":
+  {
+    "start": "DEBUG=protoman:* node --harmony app.js"
+  }
 , "dependencies": {
     "dateformat": "~1.0.6-1.2.3"
   , "debug": "~0.7.2"
