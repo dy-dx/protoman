@@ -6,9 +6,12 @@ var cfg = {
   port: 8007
 , logPath: __dirname + '/logs/'
 };
-cfg.logPath += dateFormat(new Date(), "yyyy_mm_dd-HH_MM_sso") + '.b64.log';
 
-console.log('logging to', cfg.logPath);
+function setNewLogFile () {
+  cfg.logPath = __dirname + '/logs/' + dateFormat(new Date(), "yyyy_mm_dd-HH_MM_sso") + '.b64.log';
+  console.log('Set new logfile', cfg.logPath);
+};
+setNewLogFile();
 
 var server = net.createServer(function (c) { //'connection' listener
   console.log('server connected');
@@ -16,10 +19,12 @@ var server = net.createServer(function (c) { //'connection' listener
 
   c.on('error', function (error) {
     console.log('error:', error);
+    setNewLogFile();
   });
 
   c.on('end', function () {
     console.log('server disconnected');
+    setNewLogFile();
   });
 
   c.on('data', function (data) {
