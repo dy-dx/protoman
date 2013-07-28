@@ -1,20 +1,31 @@
 
-«
-SizzEvent.proto	SizzEvent"ˆ
+Ô
+SizzEvent.proto	SizzEvent"±
 	SizzEvent
 event_timestamp (
 
 event_name (	2
 
-event_data (2.SizzEvent.SizzEvent.EventData™
+event_data (2.SizzEvent.SizzEvent.EventDataÂ
 	EventData
-key_name (	
-value_string (	
-value_float (
+key_name (	<
 
-value_long (
-value_short (
+value_type (2(.SizzEvent.SizzEvent.EventData.DATA_TYPE
+value_string (	
+value_float (
 
-value_byte (
+value_long (
+value_short (
 
-value_bool (BH
+value_byte (
+
+value_bool ("i
+	DATA_TYPE
+valueString
+
+valueFloat
+	valueLong
+
+valueShort
+	valueByte
+	valueBoolBH

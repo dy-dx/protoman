@@ -10,15 +10,19 @@ cfg.logPath += dateFormat(new Date(), "yyyy_mm_dd-HH_MM_sso") + '.b64.log';
 
 console.log('logging to', cfg.logPath);
 
-var server = net.createServer(function(c) { //'connection' listener
+var server = net.createServer(function (c) { //'connection' listener
   console.log('server connected');
   c.write('hello\r\n');
 
-  c.on('end', function() {
+  c.on('error', function (error) {
+    console.log('error:', error);
+  });
+
+  c.on('end', function () {
     console.log('server disconnected');
   });
 
-  c.on('data', function(data) {
+  c.on('data', function (data) {
     var msg = data.toString('base64') + '\n';
     c.write('HELLO JORDAN\r\n');
 
@@ -27,6 +31,6 @@ var server = net.createServer(function(c) { //'connection' listener
 
 });
 
-server.listen(cfg.port, function() { //'listening' listener
+server.listen(cfg.port, function () { //'listening' listener
   console.log('server bound on port', cfg.port);
 });
