@@ -14,4 +14,5 @@ global.swallow = (thrower) ->
   catch e
     console.error e
 
+chai.use require 'chai-changes'
 chai.use require 'sinon-chai'

@@ -18,12 +18,12 @@ sizzlingPlayerData =
   isreplay: false
 
 
-describe 'Match event handler', ->
+describe 'Match event handler for', ->
   match = null
   beforeEach ->
     match = new Match()
 
-  describe 'for ss_tournament_match_start', ->
+  describe 'ss_tournament_match_start', ->
     event =
       name: 'ss_tournament_match_start'
       timestamp: 5000
@@ -41,7 +41,7 @@ describe 'Match event handler', ->
       match.redname.should.equal 'RED'
 
 
-  describe 'for ss_player_info', ->
+  describe 'ss_player_info', ->
     event =
       name: 'ss_player_info'
       timestamp: 5000
@@ -71,7 +71,7 @@ describe 'Match event handler', ->
       player.getValue('team'    ).should.equal 3
 
 
-  describe 'for player_connect', ->
+  describe 'player_connect', ->
     event =
       name: 'player_connect'
       timestamp: 5000
@@ -93,7 +93,7 @@ describe 'Match event handler', ->
       player.getValue('isBot'    ).should.equal false
 
 
-  describe 'for player_team', ->
+  describe 'player_team', ->
     beforeEach ->
       buildPlayer(match, sizzlingPlayerData)
 
@@ -113,3 +113,19 @@ describe 'Match event handler', ->
       match.handleEvent event
       player = match.getPlayer 2
       player.getValue('team').should.equal 2
+
+
+  describe 'player_chargedeployed', ->
+    beforeEach ->
+      buildPlayer(match, sizzlingPlayerData)
+
+    event =
+      name: 'player_chargedeployed'
+      timestamp: 5000
+      data:
+        userid: 2
+        targetid: 4
+
+    it 'should handle the event', ->
+      (-> match.getPlayer(2).getValue 'ubers').should.change.by(+1).when ->
+        match.handleEvent event
