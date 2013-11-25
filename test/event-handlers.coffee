@@ -1,25 +1,52 @@
 'use strict'
 
 Match = require('../lib/match').Match
+match = null
 
 # don't know where this belongs
-buildPlayer = (match, playerData) ->
-  match.addPlayer(playerData)
+addPlayers = (playerData...) ->
+  if !playerData.length
+    match.addPlayer player for player in defaultPlayerData
+  else
+    match.addPlayer _.extend(playerData[index], player) for player, index in playerData
 
-sizzlingPlayerData =
+
+# TODO: move these into a factories file
+defaultPlayerData = [
   name: 'SizzlingCalamari'
+  steamid: 'STEAM_0:0:14353663'
   userid: 2
   entindex: 1
-  steamid: 'STEAM_0:0:14353663'
   teamid: 3
   netaddr: '192.168.1.200:27006'
   isstv: false
   isbot: false
   isreplay: false
+,
+  name: 'technosex'
+  steamid: 'STEAM_0:0:17990207'
+  userid: 3
+  entindex: 2
+  teamid: 3
+  netaddr: '47.16.233.15:27005'
+  isstv: false
+  isbot: false
+  isreplay: false
+,
+  name: 'L-block'
+  steamid: 'STEAM_0:1:29695006'
+  userid: 4
+  entindex: 3
+  teamid: 2
+  netaddr: '71.123.210.125:27005'
+  isstv: false
+  isbot: false
+  isreplay: false
+]
+
 
 
 describe 'Match event handler for', ->
-  match = null
   beforeEach ->
     match = new Match()
 
@@ -95,7 +122,7 @@ describe 'Match event handler for', ->
 
   describe 'player_team', ->
     beforeEach ->
-      buildPlayer(match, sizzlingPlayerData)
+      addPlayers()
 
     event =
       name: 'player_team'
@@ -115,9 +142,118 @@ describe 'Match event handler for', ->
       player.getValue('team').should.equal 2
 
 
+  describe 'player_death', ->
+    beforeEach ->
+      addPlayers {userid: 2, entindex: 1}, {userid: 3, entindex: 2}, {userid: 4, entindex: 3}
+
+    describe 'typical case', ->
+      event =
+        name: 'player_death'
+        timestamp: 30654
+        data:
+          userid: 4
+          victim_entindex: 3
+          inflictor_entindex: 449
+          attacker: 2
+          weapon: 'tf_projectile_rocket'
+          weaponid: 22
+          damagebits: 2359360
+          customkill: 0
+          assister: 3
+          weapon_logclassname: 'tf_projectile_rocket'
+          stun_flags: 0
+          death_flags: 128
+          silent_kill: false
+          playerpenetratecount: 0
+          assister_fallback: ''
+
+      it "should increment the attacker's kills by 1", ->
+        (-> match.getPlayer(2).getValue 'kills').should.change.by(+1).when ->
+          match.handleEvent event
+
+      it "should increment the assister's kills by 1", ->
+        (-> match.getPlayer(3).getValue 'kills').should.change.by(+1).when ->
+          match.handleEvent event
+
+      it "should increment the victim's deaths by 1", ->
+        (-> match.getPlayer(4).getValue 'assists').should.change.by(+1).when ->
+          match.handleEvent event
+
+    describe 'suicide', ->
+      event =
+        name: 'player_death'
+        timestamp: 47124
+        data:
+          userid: 2
+          victim_entindex: 1
+          inflictor_entindex: 1
+          attacker: 2
+          weapon: 'world'
+          weaponid: 0
+          damagebits: 6144
+          customkill: 6
+          assister: -1
+          weapon_logclassname: 'world'
+          stun_flags: 0
+          death_flags: 0
+          silent_kill: false
+          playerpenetratecount: 0
+          assister_fallback: ''
+
+      it "should not increment the attacker's kills", ->
+        (-> match.getPlayer(2).getValue 'kills').should.not.change.when ->
+          match.handleEvent event
+
+      it "should increment the victim's deaths by 1", ->
+        (-> match.getPlayer(2).getValue 'deaths').should.change.by(+1).when ->
+          match.handleEvent event
+
+      it "should increment the victim's suicides by 1", ->
+        (-> match.getPlayer(2).getValue 'suicides').should.change.by(+1).when ->
+          match.handleEvent event
+
+
+    describe 'feigned death', ->
+      event =
+        name: 'player_death',
+        timestamp: 35721,
+        data:
+          userid: 4
+          victim_entindex: 3
+          inflictor_entindex: 465
+          attacker: 2
+          weapon: 'tf_projectile_rocket'
+          weaponid: 22
+          damagebits: 2359360
+          customkill: 0
+          assister: 3
+          weapon_logclassname: 'tf_projectile_rocket'
+          stun_flags: 0
+          death_flags: 160
+          silent_kill: false
+          playerpenetratecount: 0
+          assister_fallback: 'b#TF_LinuxItem'
+
+      it "should not increment the attacker's kills", ->
+        (-> match.getPlayer(2).getValue 'kills').should.not.change.when ->
+          match.handleEvent event
+
+      it "should not increment the assister's assists", ->
+        (-> match.getPlayer(3).getValue 'assists').should.not.change.when ->
+          match.handleEvent event
+
+      it "should not increment the victim's deaths", ->
+        (-> match.getPlayer(4).getValue 'deaths').should.not.change.when ->
+          match.handleEvent event
+
+      it "should increment the victim's feignedDeaths by 1", ->
+        (-> match.getPlayer(4).getValue 'feignedDeaths').should.change.by(+1).when ->
+          match.handleEvent event
+
+
   describe 'player_chargedeployed', ->
     beforeEach ->
-      buildPlayer(match, sizzlingPlayerData)
+      addPlayers()
 
     event =
       name: 'player_chargedeployed'
@@ -126,6 +262,6 @@ describe 'Match event handler for', ->
         userid: 2
         targetid: 4
 
-    it 'should handle the event', ->
+    it "should increment the player's ubers by 1", ->
       (-> match.getPlayer(2).getValue 'ubers').should.change.by(+1).when ->
         match.handleEvent event

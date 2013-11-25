@@ -1,5 +1,6 @@
 'use strict'
 
+global._ = require 'underscore'
 global.assert = require 'assert'
 global.sinon = require 'sinon'
 chai = global.chai = require 'chai'
