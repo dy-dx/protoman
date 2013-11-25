@@ -17,12 +17,14 @@ describe "Compared to logs.tf", ->
       deaths: 'deaths'
       ubers: 'ubers'
       drops: 'uberDrops'
+      sentries: 'sentriesBuilt'
 
     for ltStat, ssStat of statMap
       it "#{ssStat} should be the same", ->
         for steamid, ltPlayer of ltData.players
           ssPlayer = match.getPlayerBySteamid steamid
           ssPlayer.getValue(ssStat).should.equal ltPlayer[ltStat]
+
 
   describe "customkills", ->
     statMap =
@@ -35,3 +37,13 @@ describe "Compared to logs.tf", ->
           ssPlayer = match.getPlayerBySteamid steamid
           (ssPlayer.customKills[ssStat] || 0).should.equal ltPlayer[ltStat]
 
+
+  describe "item pickups", ->
+
+    it "medkits should be the same", ->
+      for steamid, ltPlayer of ltData.players
+        ssPlayer = match.getPlayerBySteamid steamid
+        medkits = (ssPlayer.itemPickups['medkit_small'] || 0) +
+            (ssPlayer.itemPickups['medkit_medium'] || 0) * 2 +
+            (ssPlayer.itemPickups['medkit_large'] || 0) * 4
+        medkits.should.equal ltPlayer.medkits
