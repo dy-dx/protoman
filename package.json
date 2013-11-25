@@ -8,12 +8,18 @@
 , "scripts":
   {
     "start": "DEBUG=protoman:* node --harmony app.js"
-  , "test": "mocha --harmony --reporter spec"
+  , "test": "mocha --harmony --watch"
   }
 , "dependencies": {
     "dateformat": "~1.0.6-1.2.3"
+  , "coffee-script": "~1.6.3"
   , "debug": "~0.7.2"
-  , "mocha": "~1.12.0"
   , "protobuf": "~0.8.6"
+  }
+, "devDependencies": {
+    "chai": "~1.8.1"
+  , "mocha": "*"
+  , "sinon": "~1.7.3"
+  , "sinon-chai": "~2.4.0"
   }
 }
