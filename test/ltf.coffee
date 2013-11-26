@@ -17,7 +17,12 @@ describe "Compared to logs.tf", ->
       deaths: 'deaths'
       ubers: 'ubers'
       drops: 'uberDrops'
+      heals: 'healsGiven'
       sentries: 'sentriesBuilt'
+      cpc: 'pointsCaptured'
+    teamMap =
+      2: "Red"
+      3: "Blue"
 
     for ltStat, ssStat of statMap
       it "#{ssStat} should be the same", ->
@@ -25,6 +30,10 @@ describe "Compared to logs.tf", ->
           ssPlayer = match.getPlayerBySteamid steamid
           ssPlayer.getValue(ssStat).should.equal ltPlayer[ltStat]
 
+    it "team should be the same", ->
+      for steamid, ltPlayer of ltData.players
+        teamId = match.getPlayerBySteamid(steamid).getValue 'team'
+        ltPlayer.team.should.equal teamMap[teamId]
 
   describe "customkills", ->
     statMap =
