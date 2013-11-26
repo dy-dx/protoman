@@ -12,7 +12,7 @@ var events = parser.getEvents(logPath);
 
 var match = new Match();
 
-for (let i=0, len=events.length; i<len; ++i) {
+for (var i=0, len=events.length; i<len; ++i) {
   match.handleEvent(events[i]);
 }
 

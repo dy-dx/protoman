@@ -7,8 +7,8 @@
   }
 , "scripts":
   {
-    "start": "DEBUG=protoman:* node --harmony app.js"
-  , "test": "mocha --harmony --watch"
+    "start": "DEBUG=protoman:* node app.js"
+  , "test": "grunt"
   }
 , "dependencies": {
     "dateformat": "~1.0.6-1.2.3"
@@ -20,6 +20,10 @@
 , "devDependencies": {
     "chai": "~1.8.1"
   , "chai-changes": "~1.3.2"
+  , "grunt": "~0.4.2"
+  , "grunt-cli": "~0.1.11"
+  , "grunt-contrib-watch": "~0.5.3"
+  , "grunt-mocha-test": "~0.7.0"
   , "mocha": "*"
   , "sinon": "~1.7.3"
   , "sinon-chai": "~2.4.0"
