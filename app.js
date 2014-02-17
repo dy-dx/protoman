@@ -7,7 +7,7 @@ var inspect = require('./lib/inspect')
 
 
 var events = parser.getEvents(logPath);
-// debug(events);
+// debug(console.log(events));
 
 
 var match = new Match();
