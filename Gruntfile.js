@@ -6,15 +6,18 @@ module.exports = function(grunt) {
     mochaTest: {
       test: {
         options: {
-          reporter: 'spec'
+          mocha: require('mocha')
+        , reporter: 'spec'
+        , growl: true
         , require: [
-            'coffee-script'
+            'coffee-script/register'
           , 'test/support/common'
           ]
         }
       , src: [
           'test/*.coffee'
         , 'test/*.js'
+        , '!test/_support/**'
         ]
       }
     }
@@ -23,6 +26,7 @@ module.exports = function(grunt) {
         files: [
           '**/*.js'
         , '**/*.coffee'
+        , '!**/node_modules/**'
         ]
       , tasks: [
           'mochaTest'
