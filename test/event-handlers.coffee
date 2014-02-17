@@ -18,6 +18,7 @@ defaultPlayerData = [
   userid: 2
   entindex: 1
   teamid: 3
+  class: 7
   netaddr: '192.168.1.200:27006'
   isstv: false
   isbot: false
@@ -28,6 +29,7 @@ defaultPlayerData = [
   userid: 3
   entindex: 2
   teamid: 3
+  class: 7
   netaddr: '47.16.233.15:27005'
   isstv: false
   isbot: false
@@ -38,6 +40,7 @@ defaultPlayerData = [
   userid: 4
   entindex: 3
   teamid: 2
+  class: 7
   netaddr: '71.123.210.125:27005'
   isstv: false
   isbot: false
