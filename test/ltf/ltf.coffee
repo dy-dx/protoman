@@ -1,8 +1,8 @@
 'use strict'
 
-Match = require('../lib/match').Match
-ltData = require './support/0827003/lt'
-events = require './support/0827003/events'
+Match = require('../../lib/match').Match
+ltData = require '../_support/20140216010/lt'
+events = require '../_support/20140216010/events'
 
 match = new Match()
 match.handleEvent(event) for event in events
@@ -15,9 +15,10 @@ describe "Compared to logs.tf", ->
       kills: 'kills'
       assists: 'assists'
       deaths: 'deaths'
+      suicides: 'suicides'
       ubers: 'ubers'
       drops: 'uberDrops'
-      heals: 'healsGiven'
+      # heal: 'healsGiven'
       sentries: 'sentriesBuilt'
       cpc: 'pointsCaptured'
     teamMap =
@@ -25,15 +26,17 @@ describe "Compared to logs.tf", ->
       3: "Blue"
 
     for ltStat, ssStat of statMap
-      it "#{ssStat} should be the same", ->
-        for steamid, ltPlayer of ltData.players
-          ssPlayer = match.getPlayerBySteamid steamid
-          ssPlayer.getValue(ssStat).should.equal ltPlayer[ltStat]
+      do (ltStat, ssStat) ->
+        it "#{ssStat} should be the same", ->
+          for steamid, ltPlayer of ltData.players
+            ssPlayer = match.getPlayerBySteamid steamid
+            ssPlayer.getValue(ssStat).should.equal ltPlayer[ltStat]
 
     it "team should be the same", ->
       for steamid, ltPlayer of ltData.players
         teamId = match.getPlayerBySteamid(steamid).getValue 'team'
         ltPlayer.team.should.equal teamMap[teamId]
+
 
   describe "customkills", ->
     statMap =
@@ -41,10 +44,11 @@ describe "Compared to logs.tf", ->
       backstabs: 'TF_CUSTOM_BACKSTAB'
 
     for ltStat, ssStat of statMap
-      it "#{ssStat} should be the same", ->
-        for steamid, ltPlayer of ltData.players
-          ssPlayer = match.getPlayerBySteamid steamid
-          (ssPlayer.customKills[ssStat] || 0).should.equal ltPlayer[ltStat]
+      do (ltStat, ssStat) ->
+        it "#{ssStat} should be the same", ->
+          for steamid, ltPlayer of ltData.players
+            ssPlayer = match.getPlayerBySteamid steamid
+            (ssPlayer.customKills[ssStat] || 0).should.equal ltPlayer[ltStat]
 
 
   describe "item pickups", ->

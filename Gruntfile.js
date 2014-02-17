@@ -11,12 +11,12 @@ module.exports = function(grunt) {
         , growl: true
         , require: [
             'coffee-script/register'
-          , 'test/support/common'
+          , 'test/_support/common'
           ]
         }
       , src: [
-          'test/*.coffee'
-        , 'test/*.js'
+          'test/**/*.coffee'
+        , 'test/**/*.js'
         , '!test/_support/**'
         ]
       }
