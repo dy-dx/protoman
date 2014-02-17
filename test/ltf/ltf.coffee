@@ -21,6 +21,8 @@ describe "Compared to logs.tf", ->
       # heal: 'healsGiven'
       sentries: 'sentriesBuilt'
       cpc: 'pointsCaptured'
+      dmg: 'damageDealt'
+      dt: 'damageTaken'
     teamMap =
       2: "Red"
       3: "Blue"
