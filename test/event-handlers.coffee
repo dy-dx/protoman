@@ -1,6 +1,7 @@
 'use strict'
 
 Match = require '../lib/match'
+Stats = require '../lib/stats'
 match = null
 
 # don't know where this belongs
@@ -98,7 +99,6 @@ describe 'Match event handler for', ->
       player.getValue('isStv'   ).should.equal false
       player.getValue('isBot'   ).should.equal false
       player.getValue('isReplay').should.equal false
-      player.getValue('team'    ).should.equal 3
 
 
   describe 'player_connect', ->
@@ -171,15 +171,15 @@ describe 'Match event handler for', ->
           assister_fallback: ''
 
       it "should increment the attacker's kills by 1", ->
-        (-> match.getPlayer(2).getValue 'kills').should.change.by(+1).when ->
+        (-> Stats.getValue(match.getPlayer(2), 'kills')).should.change.by(+1).when ->
           match.handleEvent event
 
       it "should increment the assister's kills by 1", ->
-        (-> match.getPlayer(3).getValue 'kills').should.change.by(+1).when ->
+        (-> Stats.getValue(match.getPlayer(3), 'kills')).should.change.by(+1).when ->
           match.handleEvent event
 
       it "should increment the victim's deaths by 1", ->
-        (-> match.getPlayer(4).getValue 'assists').should.change.by(+1).when ->
+        (-> Stats.getValue(match.getPlayer(4), 'assists')).should.change.by(+1).when ->
           match.handleEvent event
 
     describe 'suicide', ->
@@ -204,15 +204,15 @@ describe 'Match event handler for', ->
           assister_fallback: ''
 
       it "should not increment the attacker's kills", ->
-        (-> match.getPlayer(2).getValue 'kills').should.not.change.when ->
+        (-> Stats.getValue(match.getPlayer(2), 'kills')).should.not.change.when ->
           match.handleEvent event
 
       it "should increment the victim's deaths by 1", ->
-        (-> match.getPlayer(2).getValue 'deaths').should.change.by(+1).when ->
+        (-> Stats.getValue(match.getPlayer(2), 'deaths')).should.change.by(+1).when ->
           match.handleEvent event
 
       it "should increment the victim's suicides by 1", ->
-        (-> match.getPlayer(2).getValue 'suicides').should.change.by(+1).when ->
+        (-> Stats.getValue(match.getPlayer(2), 'suicides')).should.change.by(+1).when ->
           match.handleEvent event
 
 
@@ -238,19 +238,19 @@ describe 'Match event handler for', ->
           assister_fallback: 'b#TF_LinuxItem'
 
       it "should not increment the attacker's kills", ->
-        (-> match.getPlayer(2).getValue 'kills').should.not.change.when ->
+        (-> Stats.getValue(match.getPlayer(2), 'kills')).should.not.change.when ->
           match.handleEvent event
 
       it "should not increment the assister's assists", ->
-        (-> match.getPlayer(3).getValue 'assists').should.not.change.when ->
+        (-> Stats.getValue(match.getPlayer(3), 'assists')).should.not.change.when ->
           match.handleEvent event
 
       it "should not increment the victim's deaths", ->
-        (-> match.getPlayer(4).getValue 'deaths').should.not.change.when ->
+        (-> Stats.getValue(match.getPlayer(4), 'deaths')).should.not.change.when ->
           match.handleEvent event
 
       it "should increment the victim's feignedDeaths by 1", ->
-        (-> match.getPlayer(4).getValue 'feignedDeaths').should.change.by(+1).when ->
+        (-> Stats.getValue(match.getPlayer(4), 'feignedDeaths')).should.change.by(+1).when ->
           match.handleEvent event
 
 
@@ -266,5 +266,5 @@ describe 'Match event handler for', ->
         targetid: 4
 
     it "should increment the player's ubers by 1", ->
-      (-> match.getPlayer(2).getValue 'ubers').should.change.by(+1).when ->
+      (-> Stats.getValue(match.getPlayer(2), 'ubers')).should.change.by(+1).when ->
         match.handleEvent event

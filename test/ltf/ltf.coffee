@@ -1,6 +1,7 @@
 'use strict'
 
 Match = require '../../lib/match'
+Stats = require '../../lib/stats'
 ltData = require '../_support/20140216010/lt'
 events = require '../_support/20140216010/events'
 
@@ -32,7 +33,7 @@ describe "Compared to logs.tf", ->
         it "#{ssStat} should be the same", ->
           for steamid, ltPlayer of ltData.players
             ssPlayer = match.getPlayerBySteamid steamid
-            ssPlayer.getValue(ssStat).should.equal ltPlayer[ltStat]
+            Stats.getValue(ssPlayer, ssStat).should.equal ltPlayer[ltStat]
 
     it "team should be the same", ->
       for steamid, ltPlayer of ltData.players
@@ -50,7 +51,7 @@ describe "Compared to logs.tf", ->
         it "#{ssStat} should be the same", ->
           for steamid, ltPlayer of ltData.players
             ssPlayer = match.getPlayerBySteamid steamid
-            (ssPlayer.customKills[ssStat] || 0).should.equal ltPlayer[ltStat]
+            Stats.getCustomKillsByType(ssPlayer, ssStat).should.equal ltPlayer[ltStat]
 
 
   describe "item pickups", ->
@@ -58,7 +59,7 @@ describe "Compared to logs.tf", ->
     it "medkits should be the same", ->
       for steamid, ltPlayer of ltData.players
         ssPlayer = match.getPlayerBySteamid steamid
-        medkits = (ssPlayer.itemPickups['medkit_small'] || 0) +
-            (ssPlayer.itemPickups['medkit_medium'] || 0) * 2 +
-            (ssPlayer.itemPickups['medkit_large'] || 0) * 4
+        medkits = Stats.getItemPickups(ssPlayer, 'medkit_small') +
+            Stats.getItemPickups(ssPlayer, 'medkit_medium') * 2 +
+            Stats.getItemPickups(ssPlayer, 'medkit_large') * 4
         medkits.should.equal ltPlayer.medkits
