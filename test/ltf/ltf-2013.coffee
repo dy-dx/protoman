@@ -1,6 +1,6 @@
 'use strict'
 
-Match = require('../../lib/match').Match
+Match = require '../../lib/match'
 ltData = require '../_support/20130827003/lt'
 events = require '../_support/20130827003/events'
 

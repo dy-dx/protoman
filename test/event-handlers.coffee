@@ -1,6 +1,6 @@
 'use strict'
 
-Match = require('../lib/match').Match
+Match = require '../lib/match'
 match = null
 
 # don't know where this belongs
