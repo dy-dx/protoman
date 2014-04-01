@@ -9,7 +9,7 @@ addPlayers = (playerData...) ->
   if !playerData.length
     match.addPlayer player for player in defaultPlayerData
   else
-    match.addPlayer _.extend(playerData[index], player) for player, index in playerData
+    match.addPlayer _.extend(defaultPlayerData[index], player) for player, index in playerData
 
 
 # TODO: move these into a factories file
@@ -83,6 +83,7 @@ describe 'Match event handler for', ->
         steamid: 'STEAM_0:0:14353663'
         teamid: 3
         netaddr: '192.168.1.200:27006'
+        class: 1
         isstv: false
         isbot: false
         isreplay: false
@@ -174,12 +175,12 @@ describe 'Match event handler for', ->
         (-> Stats.getValue(match.getPlayer(2), 'kills')).should.change.by(+1).when ->
           match.handleEvent event
 
-      it "should increment the assister's kills by 1", ->
-        (-> Stats.getValue(match.getPlayer(3), 'kills')).should.change.by(+1).when ->
+      it "should increment the assister's assists by 1", ->
+        (-> Stats.getValue(match.getPlayer(3), 'assists')).should.change.by(+1).when ->
           match.handleEvent event
 
       it "should increment the victim's deaths by 1", ->
-        (-> Stats.getValue(match.getPlayer(4), 'assists')).should.change.by(+1).when ->
+        (-> Stats.getValue(match.getPlayer(4), 'deaths')).should.change.by(+1).when ->
           match.handleEvent event
 
     describe 'suicide', ->

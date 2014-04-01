@@ -33,7 +33,7 @@ describe "Compared to logs.tf", ->
         it "#{ssStat} should be the same", ->
           for steamid, ltPlayer of ltData.players
             ssPlayer = match.getPlayerBySteamid steamid
-            Stats.getValue(ssPlayer, ssStat).should.equal ltPlayer[ltStat]
+            Stats.getTotal(ssPlayer, ssStat).should.equal ltPlayer[ltStat]
 
     it "team should be the same", ->
       for steamid, ltPlayer of ltData.players
