@@ -4,12 +4,13 @@ Match = require '../../lib/match'
 Stats = require '../../lib/stats'
 ltData = require '../_support/20130827003/lt'
 events = require '../_support/20130827003/events'
-
-match = new Match()
-match.handleEvent(event) for event in events
+match = null
 
 
 describe "Compared to logs.tf (2013)", ->
+  before ->
+    match = new Match()
+    match.handleEvent(event) for event in events
 
   describe "base stats", ->
     statMap =
