@@ -124,6 +124,22 @@ describe 'Match event handler for', ->
       player.getValue('isBot'    ).should.equal false
 
 
+  describe 'player_changeclass', ->
+    beforeEach ->
+      addPlayers {userid: 2, entindex: 1, class: 2}
+
+    event =
+      name: 'player_changeclass'
+      timestamp: 5000
+      data:
+        userid: 2
+        class: 5
+
+    it 'should handle the event', ->
+      (-> match.getPlayer(2).getRole()).should.change.from(8).to(7).when ->
+        match.handleEvent event
+
+
   describe 'player_team', ->
     beforeEach ->
       addPlayers()
