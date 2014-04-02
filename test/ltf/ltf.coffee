@@ -64,3 +64,12 @@ describe "Compared to logs.tf", ->
             Stats.getItemPickups(ssPlayer, 'medkit_medium') * 2 +
             Stats.getItemPickups(ssPlayer, 'medkit_large') * 4
         medkits.should.equal ltPlayer.medkits
+
+
+  describe "played classes counted", ->
+
+    it "should be the same (with threshold of 8 seconds)", ->
+      for steamid, ltPlayer of ltData.players
+        ssPlayer = match.getPlayerBySteamid steamid
+        Stats.playedClasses(ssPlayer, 8).length.should.equal ltPlayer.class_stats.length
+

@@ -36,10 +36,3 @@ describe 'Player', ->
     it 'should remap the class id', ->
       (-> player.getRole()).should.change.from(1).to(8).when -> player.setRole(2)
 
-
-  describe '#playedClasses', ->
-    beforeEach -> player = buildPlayer(class: 1)
-
-    it 'should return an array of played classes', ->
-      player.setRole(n) for n in [1, 2, 5]
-      player.playedClasses().should.deep.equal [1,7,8]
