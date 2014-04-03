@@ -61,3 +61,30 @@ describe "Compared to logs.tf (2013)", ->
             Stats.getItemPickups(ssPlayer, 'medkit_medium') * 2 +
             Stats.getItemPickups(ssPlayer, 'medkit_large') * 4
         medkits.should.equal ltPlayer.medkits
+
+
+  describe "played classes counted", ->
+
+    it "should be the same (with threshold of 8 seconds)", ->
+      for steamid, ltPlayer of ltData.players
+        ssPlayer = match.getPlayerBySteamid steamid
+        Stats.playedClasses(ssPlayer, 8).length.should.equal ltPlayer.class_stats.length
+
+
+  describe "class stats", ->
+    statMap =
+      kills: 'kills'
+      assists: 'assists'
+      deaths: 'deaths'
+      dmg: 'damageDealt'
+
+    classMap = [null, 'scout', 'soldier', 'pyro', 'demoman', 'heavyweapons', 'engineer', 'medic', 'sniper', 'spy']
+
+    for ltStat, ssStat of statMap
+      do (ltStat, ssStat) ->
+        it "#{ssStat} should be the same", ->
+          for steamid, ltPlayer of ltData.players
+            ssPlayer = match.getPlayerBySteamid steamid
+            for ltClassStats in ltPlayer.class_stats
+              roleId = classMap.indexOf ltClassStats.type
+              ssPlayer.getStats(roleId)[ssStat].should.equal ltClassStats[ltStat]

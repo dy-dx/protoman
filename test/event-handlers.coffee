@@ -125,19 +125,33 @@ describe 'Match event handler for', ->
 
 
   describe 'player_changeclass', ->
-    beforeEach ->
-      addPlayers {userid: 2, entindex: 1, class: 2}
-
-    event =
+    player = null
+    changeClassEvent = (classId = 5, timestamp = 5000) ->
       name: 'player_changeclass'
-      timestamp: 5000
+      timestamp: timestamp
       data:
         userid: 2
-        class: 5
+        class: classId
 
-    it 'should handle the event', ->
-      (-> match.getPlayer(2).getRole()).should.change.from(8).to(7).when ->
-        match.handleEvent event
+    beforeEach ->
+      addPlayers {userid: 2, entindex: 1, class: 2} # class 2 maps to role 8
+      player = match.getPlayer(2)
+
+    it 'should map and set the player\'s role', ->
+      (-> player.getRole()).should.change.from(8).to(7).when ->
+        match.handleEvent changeClassEvent(5)
+
+
+    describe 'while the match is inactive', ->
+      beforeEach ->
+        Stats.setActive(player, 1000)
+        match.handleEvent { name: 'teamplay_round_win', timestamp: 2000, data: {} }
+        match.handleEvent changeClassEvent(1, 3000) # class 1 maps to role 1
+
+      it 'should still map and set the player\'s role', ->
+        player.getRole().should.equal 1
+
+
 
 
   describe 'player_team', ->
