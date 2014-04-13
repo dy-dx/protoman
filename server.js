@@ -1,3 +1,4 @@
+'use strict';
 var net = require('net')
   , fs = require('fs')
   , dateFormat = require('dateformat');
@@ -10,7 +11,7 @@ var cfg = {
 function setNewLogFile () {
   cfg.logPath = __dirname + '/logs/' + dateFormat(new Date(), "yyyy_mm_dd-HH_MM_sso") + '.b64.log';
   console.log('Set new logfile', cfg.logPath);
-};
+}
 setNewLogFile();
 
 var server = net.createServer(function (c) { //'connection' listener
